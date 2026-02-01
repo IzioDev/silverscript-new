@@ -160,6 +160,8 @@ pub enum BinaryOp {
 pub enum NullaryOp {
     ActiveInputIndex,
     ActiveBytecode,
+    ThisScriptSize,
+    ThisScriptSizeDataPrefix,
     TxInputsLength,
     TxOutputsLength,
     TxVersion,
@@ -798,6 +800,8 @@ fn parse_nullary(raw: &str) -> Result<Expr, CompilerError> {
     let op = match raw {
         "this.activeInputIndex" => NullaryOp::ActiveInputIndex,
         "this.activeBytecode" => NullaryOp::ActiveBytecode,
+        "this.scriptSize" => NullaryOp::ThisScriptSize,
+        "this.scriptSizeDataPrefix" => NullaryOp::ThisScriptSizeDataPrefix,
         "tx.inputs.length" => NullaryOp::TxInputsLength,
         "tx.outputs.length" => NullaryOp::TxOutputsLength,
         "tx.version" => NullaryOp::TxVersion,
