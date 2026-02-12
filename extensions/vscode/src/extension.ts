@@ -3,11 +3,6 @@ import * as path from "path";
 import * as fs from "fs/promises";
 import { Language, Parser, Query } from "web-tree-sitter";
 import type { QueryCapture } from "web-tree-sitter";
-import {
-  LanguageClient,
-  LanguageClientOptions,
-  ServerOptions,
-} from "vscode-languageclient/node";
 
 const TOKEN_TYPES = [
   "comment",
@@ -33,7 +28,6 @@ const legend = new vscode.SemanticTokensLegend(
 
 const LOG_DEBUG = true;
 let outputChannel: vscode.OutputChannel | null = null;
-let client: LanguageClient | null = null;
 
 function logInfo(message: string) {
   if (!outputChannel) {
@@ -342,8 +336,6 @@ class SilverScriptSemanticTokensProvider
         const sp = cap.node.startPosition;
         const ep = cap.node.endPosition;
 
-        // Assumption: your language is mostly ASCII; if you rely heavily on non-ASCII,
-        // you'll want a UTF conversion layer for columns.
         const start = new vscode.Position(sp.row, sp.column);
         const end = new vscode.Position(ep.row, ep.column);
 
@@ -378,29 +370,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(outputChannel);
   logInfo("SilverScript extension activated.");
 
-  const serverOptions: ServerOptions = {
-    command: "silverscript-lsp",
-    args: [],
-    options: { env: process.env },
-  };
-
-  const clientOptions: LanguageClientOptions = {
-    documentSelector: [{ language: "silverscript", scheme: "file" }],
-    synchronize: { configurationSection: "silverscript" },
-  };
-
-  client = new LanguageClient(
-    "silverscript",
-    "SilverScript Language Server",
-    serverOptions,
-    clientOptions,
-  );
-  client.start();
-  context.subscriptions.push({
-    dispose() {
-      client?.stop();
-    },
-  });
+  // TODO: add LSP (LanguageClient + LanguageServer)
 
   const provider = new SilverScriptSemanticTokensProvider(context);
 
@@ -412,7 +382,6 @@ export function activate(context: vscode.ExtensionContext) {
     ),
   );
 
-  // Refresh semantic tokens when docs change
   context.subscriptions.push(
     vscode.workspace.onDidChangeTextDocument((e) => {
       if (e.document.languageId === "silverscript") {
@@ -422,6 +391,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
+// TODO: deactivate LSP
 export function deactivate() {
-  return client?.stop();
+  return undefined;
 }
