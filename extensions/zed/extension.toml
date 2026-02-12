@@ -7,9 +7,12 @@ description = "SilverScript language support."
 languages = ["languages/silverscript"]
 
 [grammars.silverscript]
-# change to real remote URL
-repository = "file:///D:/Dev/kaspa/silverscript"
-rev = "2a9dc16ec722bb9994ed81ef2d347f73853f9c04"
+# useful for development
+# repository = "file:///D:/Dev/kaspa/silverscript"
+
+# @TODO(izio): change before merge
+repository = "https://github.com/IzioDev/silverscript-new"
+rev = "d85a801f49863fcd20069e5ffea93473dcc06519"
 path = "tree-sitter"
 
 [language_servers.silverscript-lsp]
