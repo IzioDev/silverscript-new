@@ -31,3 +31,23 @@ fn full_diagnostic_from_missing_semicolon() {
     assert!(location.column() > 0);
     assert!(location.line_text().contains("int x = a + b"));
 }
+
+#[test]
+fn unclassified_diagnostic_preserves_pest_message() {
+    let source = r#"
+        pragma silverscript ^0.1.0;
+
+        contract Foo() {
+            ???
+        }
+    "#;
+
+    let err = parse_contract_ast(source).expect_err("invalid token must fail parsing");
+    let CompilerError::Parse(diagnostic) = err else {
+        panic!("expected parse error");
+    };
+
+    assert_eq!(diagnostic.interpretation(), ParseErrorInterpretation::Unclassified);
+    assert_ne!(diagnostic.primary_message(), "parsing error occurred.");
+    assert!(diagnostic.primary_message().contains("expected"));
+}
