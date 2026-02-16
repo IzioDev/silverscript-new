@@ -1,13 +1,23 @@
 ### Development
 
-- Change `extensions\zed\extension.toml` the root of this repository (absolute path required)
+- Set `repository` in `extensions\zed\extension.toml` to this repository root (absolute path required).
+- In Zed, press `Ctrl+Shift+P` and run `install dev extension`, then pick `extensions/zed`.
 
-Optional, if you want to change the grammar:
+#### Live Grammar Changes
 
-1. generate `tree-sitter` (in `/tree-sitter`) and create a local commit
-2. change the `rev` field with the git HEAD revision (`git rev-parse HEAD`)
+Build the grammar from your working tree and copy the wasm into the dev extension:
 
-Press ctrl+shift+p and enter: "install dev extension", pick this folder (`/extensions/zed`), click open.
+```bash
+cd tree-sitter
+npm run build:zed
+```
+
+Then in Zed run `zed: reload extensions`.
+
+### Release
+
+Before sharing or committing extension metadata updates, set `rev` to a real commit SHA in
+`extensions\zed\extension.toml`.
 
 ### Syntax highlight (`highlights.scm`)
 

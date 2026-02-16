@@ -12,7 +12,7 @@ repository = "file:///D:/Dev/kaspa/silverscript"
 
 # @TODO(izio): change before merge
 #repository = "https://github.com/IzioDev/silverscript-new"
-rev = "d85a801f49863fcd20069e5ffea93473dcc06519"
+rev = "25764b1953c5827958353c4d2702a40d1059900c"
 path = "tree-sitter"
 
 [language_servers.silverscript-lsp]
