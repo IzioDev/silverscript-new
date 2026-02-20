@@ -1440,10 +1440,7 @@ fn parse_hex_literal<'i>(pair: Pair<'i, Rule>) -> Result<Expr<'i>, CompilerError
         .map(|i| u8::from_str_radix(&normalized[i..i + 2], 16))
         .collect::<Result<Vec<_>, _>>()
         .map_err(|_| CompilerError::InvalidLiteral(format!("invalid hex literal '{raw}'")))?;
-    Ok(Expr::new(
-        ExprKind::Array(bytes.into_iter().map(|byte| Expr::new(ExprKind::Byte(byte), span)).collect()),
-        span,
-    ))
+    Ok(Expr::new(ExprKind::Array(bytes.into_iter().map(|byte| Expr::new(ExprKind::Byte(byte), span)).collect()), span))
 }
 
 fn apply_number_unit<'i>(expr: Expr<'i>, unit: &str) -> Result<Expr<'i>, CompilerError> {

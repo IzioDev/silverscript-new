@@ -1064,19 +1064,15 @@ fn compile_statement<'i>(
                 let is_byte_array_type = effective_type_name.starts_with("byte[") && effective_type_name.ends_with("[]");
 
                 let initial = match expr {
-                    Some(Expr { kind: ExprKind::Identifier(other), .. }) => {
-                        match types.get(other) {
-                            Some(other_type) if is_type_assignable(other_type, &effective_type_name, contract_constants) => {
-                                Expr::new(ExprKind::Identifier(other.clone()), span::Span::default())
-                            }
-                            Some(_) => {
-                                return Err(CompilerError::Unsupported(
-                                    "array assignment requires compatible array types".to_string(),
-                                ));
-                            }
-                            None => return Err(CompilerError::UndefinedIdentifier(other.clone())),
+                    Some(Expr { kind: ExprKind::Identifier(other), .. }) => match types.get(other) {
+                        Some(other_type) if is_type_assignable(other_type, &effective_type_name, contract_constants) => {
+                            Expr::new(ExprKind::Identifier(other.clone()), span::Span::default())
                         }
-                    }
+                        Some(_) => {
+                            return Err(CompilerError::Unsupported("array assignment requires compatible array types".to_string()));
+                        }
+                        None => return Err(CompilerError::UndefinedIdentifier(other.clone())),
+                    },
                     Some(e) if is_byte_array_type => {
                         // byte[] can be initialized from any bytes expression
                         e.clone()
