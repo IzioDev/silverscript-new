@@ -10,9 +10,9 @@ languages = ["languages/silverscript"]
 # useful for development
 # repository = "file:///D:/Dev/kaspa/silverscript"
 
-# @TODO(izio): change before merge
-repository = "https://github.com/IzioDev/silverscript-new"
-rev = "591d7a9263c3fe579fc89eaeba77e557be08f0d2"
+repository = "https://github.com/rusty-kaspa/silverscript"
+# @TODO(izio): bump after squash merge
+rev = "8064ce2fd8588e4fca4499dad0669b80ea5b4165"
 path = "tree-sitter"
 
 [language_servers.silverscript-lsp]
